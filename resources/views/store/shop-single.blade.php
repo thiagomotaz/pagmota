@@ -270,13 +270,15 @@
   <script src="{{ asset('/js/owl.carousel.min.js')}}"></script>
   <script src="{{ asset('/js/jquery.magnific-popup.min.js')}}"></script>
   <script src="{{ asset('/js/aos.js')}}"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
   <script src="{{ asset('/js/main.js')}}"></script>
 
   <script>
     $(document).ready(function() {
       // localStorage.clear();
       console.log(JSON.parse(localStorage.getItem("products_cart")));
+      // Cookies.set('foo', 'bar');
+      console.log(Cookies.get('products_cart'));
       $('#addCart').click(function() {
         $.ajax({
           type: "GET",
@@ -292,6 +294,13 @@
               if (localStorage.hasOwnProperty("products_cart")) {
                 products_cart = JSON.parse(localStorage.getItem("products_cart"));
               }
+              if(Cookies.get("products_cart") == undefined){
+                products_cartC = JSON.parse(Cookies.get('products_cart'));
+                console.log("nao tem");
+              }else{
+                console.log("tem");
+              }
+             
 
               products_cart.push({
                 'product-id': <?= $product->id ?>,
@@ -301,26 +310,28 @@
                 'product-name': escape('<?= $product->name ?>')
               });
 
-              localStorage.setItem("products_cart", JSON.stringify(products_cart))
-
-
-
-
-              // var products = JSON.parse(localStorage.getItem("products_cart")); //ver se o array já está definido
-              // console.log(products);
-              // if (jQuery.isEmpt(products)) {
-              //   alert("vazio");
-              //   localStorage.setItem("products_cart", JSON.stringify(data));
-              // } else {
-              //   alert("aq2");
-              //   products.push(data);
-              //   console.log(products);
-              // localStorage.setItem('products_cart', JSON.stringify(products));
-
-
-              // console.log(data);
+              localStorage.setItem("products_cart", JSON.stringify(products_cart));
+              Cookies.set("products_cart", JSON.stringify(products_cart));
             } else {
-              alert("shit");
+              $.ajax({
+                type: "POST",
+                url: "/cart",
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                  "product-id": '{{ $product->id }}',
+                  "quantity": $('#quantity').val()
+                },
+                success: function(response) {
+                  alert(response);
+                  alert("adicionado com sucesso ao carrinho"); //tratar caso já tenha adicionado no carrinho esse item
+                },
+                error: function(response) {
+                  alert(response);
+                }
+
+              });
             }
           },
           error: function(response) {
@@ -331,26 +342,8 @@
         });
 
 
-        // alert('');
-        // $.ajax({
-        //   type: "POST",
-        //   url: "/cart",
-        //   headers: {
-        //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //   },
-        //   data: {
-        //     "product-id": '{{ $product->id }}',
-        //     "quantity": $('#quantity').val()
-        //   },
-        //   success: function(response) {
-        //     alert(response);
-        //     alert("adicionado com sucesso ao carrinho"); //tratar caso já tenha adicionado no carrinho esse item
-        //   },
-        //   error: function(response) {
-        //     alert(response);
-        //   }
+        alert('');
 
-        // });
       });
     });
   </script>

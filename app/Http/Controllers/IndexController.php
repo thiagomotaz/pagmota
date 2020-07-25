@@ -32,7 +32,6 @@ class IndexController extends Controller
     {
         //pega o id do cart do usuário antes
         $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
-
         if (!$cart->first()) { //if dnt have cart, creeate one
             $idCart = Cart::create([
                 'user_id' => auth()->user()->id

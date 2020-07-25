@@ -18,9 +18,9 @@
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -32,9 +32,9 @@
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -46,9 +46,9 @@
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -74,4 +74,33 @@
         </div>
     </div>
 </div>
+<script>
+    //depois de registrar faz a integração do carrinho
+    //varre os items em cache local
+
+    var local_cart = JSON.parse(localStorage.getItem("products_cart"));
+    console.log(local_cart);
+    Object.keys(local_cart).forEach(function(k) {
+        console.log("linha" + k + ' - ' + local_cart[k]['product-id'] + "-" + local_cart[k]['quantity']);
+        //faz as requisicoes para cada item no carrinho (sincronizar)
+        $.ajax({
+            type: "POST",
+            url: "/cart",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {'product_id': local_cart[k]['product-id'], 'quantity': local_cart[k]['quantity']}, //cart id o controller se encarrega
+            success: function(response) {
+                alert("ok");
+                alert(response);
+                //se der certo, limpa o cache
+            },
+            error: function(response) {
+                alert("n ok");
+                alert(response);
+
+            }
+        });
+    });
+</script>
 @endsection
