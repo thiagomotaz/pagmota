@@ -7,12 +7,13 @@ use App\Cart;
 use App\CartProducts;
 use Auth;
 use Illuminate\Http\Request;
+use Cache;
 
 class IndexController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
     //
     public function index()
@@ -41,7 +42,6 @@ class IndexController extends Controller
                 'cart_id' => $idCart->id,
                 'quantity' => $request->input('quantity'),
             ]);
-
         } else {
             CartProducts::create([
                 'product_id' => $request->input('product-id'),
@@ -55,15 +55,18 @@ class IndexController extends Controller
     {
         //pega o id do cart do usuário antes
         CartProducts::where('id', $request->id)->delete();
-
     }
 
     public function showCart()
     {
-        $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
-        // echo $cart;
-        $cart_id = $cart[0]->id;
-        $products = Cart::find($cart_id)->products;
-        return view('store/cart', ['products' => $products]);
+        if (!Auth::check()) {
+            return view('store/cart');
+        } else {
+            $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
+            // echo $cart;
+            $cart_id = $cart[0]->id;
+            $products = Cart::find($cart_id)->products;
+            return view('store/cart', ['products' => $products]);
+        }
     }
 }

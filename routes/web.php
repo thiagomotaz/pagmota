@@ -31,6 +31,10 @@ Route::get('foo', function () {
 //     // Only verified users may enter...
 // })-;
 
+Route::get('/check',function(){
+    return (\Auth::check()) ? 1 : 0;
+});
+
 Route::get('/index', 'IndexController@index');
 Route::get('/product/{id}', 'IndexController@show');
 Route::get('/cart', 'IndexController@showCart');

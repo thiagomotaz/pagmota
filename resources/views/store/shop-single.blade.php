@@ -275,28 +275,82 @@
 
   <script>
     $(document).ready(function() {
-
+      // localStorage.clear();
+      console.log(JSON.parse(localStorage.getItem("products_cart")));
       $('#addCart').click(function() {
-        // alert('');
         $.ajax({
-          type: "POST",
-          url: "/cart",
+          type: "GET",
+          url: "/check",
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
-          data: {
-            "product-id": '{{ $product->id }}',
-            "quantity": $('#quantity').val()
-          },
           success: function(response) {
-            alert(response);
-            alert("adicionado com sucesso ao carrinho"); //tratar caso já tenha adicionado no carrinho esse item
+            let products_cart = new Array()
+
+            // alert("ok");
+            if (parseInt(response) == 0) { //não está logado, armazenar o carrinho
+              if (localStorage.hasOwnProperty("products_cart")) {
+                products_cart = JSON.parse(localStorage.getItem("products_cart"));
+              }
+
+              products_cart.push({
+                'product-id': <?= $product->id ?>,
+                'quantity': parseInt($('#quantity').val()), //salvar nome, foto etc tb pra listar no carrinho
+                'product-price': <?= $product->price  ?>,
+                'product-image': escape('<?= $product->image ?>'),
+                'product-name': escape('<?= $product->name ?>')
+              });
+
+              localStorage.setItem("products_cart", JSON.stringify(products_cart))
+
+
+
+
+              // var products = JSON.parse(localStorage.getItem("products_cart")); //ver se o array já está definido
+              // console.log(products);
+              // if (jQuery.isEmpt(products)) {
+              //   alert("vazio");
+              //   localStorage.setItem("products_cart", JSON.stringify(data));
+              // } else {
+              //   alert("aq2");
+              //   products.push(data);
+              //   console.log(products);
+              // localStorage.setItem('products_cart', JSON.stringify(products));
+
+
+              // console.log(data);
+            } else {
+              alert("shit");
+            }
           },
           error: function(response) {
+            alert("n ok");
             alert(response);
-          }
 
+          }
         });
+
+
+        // alert('');
+        // $.ajax({
+        //   type: "POST",
+        //   url: "/cart",
+        //   headers: {
+        //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //   },
+        //   data: {
+        //     "product-id": '{{ $product->id }}',
+        //     "quantity": $('#quantity').val()
+        //   },
+        //   success: function(response) {
+        //     alert(response);
+        //     alert("adicionado com sucesso ao carrinho"); //tratar caso já tenha adicionado no carrinho esse item
+        //   },
+        //   error: function(response) {
+        //     alert(response);
+        //   }
+
+        // });
       });
     });
   </script>

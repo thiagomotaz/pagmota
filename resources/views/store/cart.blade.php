@@ -18,11 +18,46 @@
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
   <script src="js/jquery-3.3.1.min.js"></script>
 
+  <script>
+    function localCart() {
+      var local_cart = JSON.parse(localStorage.getItem("products_cart"));
+      console.log(local_cart);
+      Object.keys(local_cart).forEach(function(k) {
+        console.log("linha" + k + ' - ' + local_cart[k]['product-id'] + "-" + local_cart[k]['quantity']);
+        var html = "<tr>" +
+          "<td class='product-thumbnail'>" +
+          "<img src='" + unescape(local_cart[k]['product-image']) + "' + alt='Image' class='img-fluid'>" +
+          "</td>" +
+          "<td class='product-name'>" +
+          "<h2 class='h5 text-black'>"+ unescape(local_cart[k]['product-name']) + "</h2>" +
+          "</td>" +
+          "<td>R$" + local_cart[k]['product-price'] + "</td>" +
+          "<td>" +
+          "<div class='input-group mb-3' style='max-width: 120px;'>" +
+          "<div class='input-group-prepend'>" +
+          "<button class='btn btn-outline-primary js-btn-minus' type='button'>&minus;</button>" +
+          "</div>" +
+          "<input type='text' class='form-control text-center' value='"+local_cart[k]['quantity']+"' placeholder='' aria-label='Example text with button addon' aria-describedby='button-addon1'>" +
+          "<div class='input-group-append'>" +
+          "<button class='btn btn-outline-primary js-btn-plus' type='button'>&plus;</button>" +
+          "</div>" +
+          "</div>" +
+          "</td>" +
+          "<td>R$"+ local_cart[k]['product-price'] * local_cart[k]['quantity'] + "</td>" +
+          "<td><a href='#'' onclick='deleteCart()' class='btn btn-primary height-auto btn-sm'>X</a></td>" +
+          "</tr>";
+        $("#cart").append(html); //monta os obj pra serem listados la
+      });
 
+      // console.log()
+
+
+    }
+  </script>
   <link rel="stylesheet" href="css/aos.css">
 
   <link rel="stylesheet" href="css/style.css">
- 
+
 </head>
 
 <body>
@@ -115,9 +150,10 @@
                     <th class="product-remove">Remover</th>
                   </tr>
                 </thead>
-                <tbody>
-
+                <tbody id="cart">
                   @php $total = 0; @endphp
+                  @auth
+                  <!-- se o usuário está logado -->
                   @foreach ($products as $product)
                   @php $localTotal = $product->price * $product->quantity; @endphp
                   <tr>
@@ -144,8 +180,14 @@
 
                     <td><a href="#" onclick="deleteCart('{{$product->id}}')" class="btn btn-primary height-auto btn-sm">X</a></td>
                   </tr>
+
                   {{ $total += $localTotal }}
                   @endforeach
+                  @else
+                  <?php echo "<script>localCart('alo');</script>" ?>
+
+                  @endauth
+
                 </tbody>
               </table>
             </div>
@@ -276,23 +318,25 @@
   <script src="js/main.js"></script>
 
   <script>
-    function deleteCart(id) {
-      $.ajax({
-        type: "DELETE",
-        url: "/cart/" + id,
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
+    $(document).ready(function() {
+      function deleteCart(id) {
+        $.ajax({
+          type: "DELETE",
+          url: "/cart/" + id,
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
 
-        success: function(response) {
-          alert("deletado com sucesso item do carrinho"); //tratar caso já tenha adicionado no carrinho esse item
-        },
-        error: function(response) {
-          alert(response);
-        }
+          success: function(response) {
+            alert("deletado com sucesso item do carrinho"); //tratar caso já tenha adicionado no carrinho esse item
+          },
+          error: function(response) {
+            alert(response);
+          }
 
-      });
-    }
+        });
+      }
+    });
   </script>
 </body>
 
