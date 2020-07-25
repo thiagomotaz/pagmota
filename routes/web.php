@@ -35,6 +35,7 @@ Route::get('/index', 'IndexController@index');
 Route::get('/product/{id}', 'IndexController@show');
 Route::get('/cart', 'IndexController@showCart');
 Route::post('/cart', 'IndexController@addCart');
+Route::delete('/cart/{id}', 'IndexController@deleteCart');
 
 
 // Route::get('/product/{id}', 'IndexController@show');

@@ -51,6 +51,13 @@ class IndexController extends Controller
         }
     }
 
+    public function deleteCart(Request $request)
+    {
+        //pega o id do cart do usuário antes
+        CartProducts::where('id', $request->id)->delete();
+
+    }
+
     public function showCart()
     {
         $cart = Cart::where('user_id', '=', auth()->user()->id)->get();

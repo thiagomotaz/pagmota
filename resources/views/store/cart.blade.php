@@ -5,6 +5,7 @@
   <title>Pharmative &mdash; Colorlib Template</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="fonts/icomoon/style.css">
@@ -15,12 +16,13 @@
   <link rel="stylesheet" href="css/jquery-ui.css">
   <link rel="stylesheet" href="css/owl.carousel.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <script src="js/jquery-3.3.1.min.js"></script>
 
 
   <link rel="stylesheet" href="css/aos.css">
 
   <link rel="stylesheet" href="css/style.css">
-
+ 
 </head>
 
 <body>
@@ -114,9 +116,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {{ $total = 0 }}
+
+                  @php $total = 0; @endphp
                   @foreach ($products as $product)
-                  {{ $localTotal = $product->price * $product->quantity }}
+                  @php $localTotal = $product->price * $product->quantity; @endphp
                   <tr>
                     <td class="product-thumbnail">
                       <img src="{{$product->image}}" alt="Image" class="img-fluid">
@@ -138,7 +141,8 @@
 
                     </td>
                     <td>R${{ $localTotal }}</td>
-                    <td><a href="#" class="btn btn-primary height-auto btn-sm">X</a></td>
+
+                    <td><a href="#" onclick="deleteCart('{{$product->id}}')" class="btn btn-primary height-auto btn-sm">X</a></td>
                   </tr>
                   {{ $total += $localTotal }}
                   @endforeach
@@ -184,7 +188,7 @@
                     <span class="text-black">Subtotal</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">R$ {{$total}}</strong>
+                    <strong class="text-black">R${{$total}}</strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -192,7 +196,7 @@
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">R$230.00</strong>
+                    <strong class="text-black">R${{$total}}</strong>
                   </div>
                 </div>
 
@@ -262,7 +266,6 @@
     </footer>
   </div>
 
-  <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/jquery-ui.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -272,6 +275,25 @@
 
   <script src="js/main.js"></script>
 
+  <script>
+    function deleteCart(id) {
+      $.ajax({
+        type: "DELETE",
+        url: "/cart/" + id,
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        success: function(response) {
+          alert("deletado com sucesso item do carrinho"); //tratar caso já tenha adicionado no carrinho esse item
+        },
+        error: function(response) {
+          alert(response);
+        }
+
+      });
+    }
+  </script>
 </body>
 
 </html>
