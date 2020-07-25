@@ -292,6 +292,7 @@
             alert("adicionado com sucesso ao carrinho"); //tratar caso já tenha adicionado no carrinho esse item
           },
           error: function(response) {
+            alert(response);
           }
 
         });

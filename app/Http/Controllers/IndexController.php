@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Cart;
 use App\CartProducts;
-
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
     public function __construct()
     {
-        $this->user = Auth::user();
+        $this->middleware('auth');
     }
     //
     public function index()
@@ -26,38 +25,38 @@ class IndexController extends Controller
     {
         $product = Product::find($id);
         return view('store/shop-single', ['product' => $product]);
-        
     }
 
     public function addCart(Request $request)
     {
         //pega o id do cart do usuário antes
-        $cart = Cart::find(auth()->user()->id);
-        if($cart == null){
-            //cria um carrinho pro usuario
+        $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
+
+        if (!$cart->first()) { //if dnt have cart, creeate one
             $idCart = Cart::create([
                 'user_id' => auth()->user()->id
             ]);
             CartProducts::create([
                 'product_id' => $request->input('product-id'),
-                'cart_id' => $idCart,
+                'cart_id' => $idCart->id,
                 'quantity' => $request->input('quantity'),
             ]);
-        }else{
-            $idCart = $cart->id;
+
+        } else {
             CartProducts::create([
                 'product_id' => $request->input('product-id'),
-                'cart_id' => $idCart,
+                'cart_id' => $cart[0]->id,
                 'quantity' => $request->input('quantity'),
             ]);
         }
-       
     }
 
     public function showCart()
     {
-
-        $products = Cart::find(auth()->user()->id)->products;
+        $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
+        // echo $cart;
+        $cart_id = $cart[0]->id;
+        $products = Cart::find($cart_id)->products;
         return view('store/cart', ['products' => $products]);
     }
 }
