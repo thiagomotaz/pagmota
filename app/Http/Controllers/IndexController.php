@@ -28,6 +28,21 @@ class IndexController extends Controller
         return view('store/shop-single', ['product' => $product]);
     }
 
+    public function teste()
+    {
+        if (isset($_COOKIE["products_cart"])) {
+
+            $cartJson = json_decode(utf8_encode($_COOKIE["products_cart"]));
+            // var_dump($cartJson);
+            // $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
+            foreach ($cartJson as $cartLocal) { //ta encarando como um so item
+                echo ($cartLocal->product_name);
+                return;
+                
+            }
+        }
+    }
+
     public function addCart(Request $request)
     {
         //pega o id do cart do usuário antes

@@ -34,6 +34,8 @@ Route::get('foo', function () {
 Route::get('/check',function(){
     return (\Auth::check()) ? 1 : 0;
 });
+Route::get('/teste', 'IndexController@teste');
+
 
 Route::get('/index', 'IndexController@index');
 Route::get('/product/{id}', 'IndexController@show');

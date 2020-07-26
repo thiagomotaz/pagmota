@@ -74,33 +74,4 @@
         </div>
     </div>
 </div>
-<script>
-    //depois de registrar faz a integração do carrinho
-    //varre os items em cache local
-
-    var local_cart = JSON.parse(localStorage.getItem("products_cart"));
-    console.log(local_cart);
-    Object.keys(local_cart).forEach(function(k) {
-        console.log("linha" + k + ' - ' + local_cart[k]['product-id'] + "-" + local_cart[k]['quantity']);
-        //faz as requisicoes para cada item no carrinho (sincronizar)
-        $.ajax({
-            type: "POST",
-            url: "/cart",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {'product_id': local_cart[k]['product-id'], 'quantity': local_cart[k]['quantity']}, //cart id o controller se encarrega
-            success: function(response) {
-                alert("ok");
-                alert(response);
-                //se der certo, limpa o cache
-            },
-            error: function(response) {
-                alert("n ok");
-                alert(response);
-
-            }
-        });
-    });
-</script>
 @endsection

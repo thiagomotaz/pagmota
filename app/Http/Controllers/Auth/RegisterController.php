@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Cart;
+use App\CartProducts;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -65,15 +68,44 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        User::create([
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        //insert cart into db
-
-        
-
     }
 
-}   
+    protected function registered(Request $request, $user)
+    {
+        if ($_COOKIE["products_cart"] != null) {
+            $cartJson = json_decode(utf8_encode($_COOKIE["products_cart"]));
+            // var_dump($cartJson);
+            $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
+            if (!$cart->first()) { //if dnt have cart, creeate one
+                $idCart = Cart::create([
+                    'user_id' => auth()->user()->id
+                ]);
+            }
+            foreach ($cartJson as $cartLocal) { //ta encarando como um so item
+                echo $cartLocal->product_id;
+
+                if (isset($idCart)) {
+                    CartProducts::create([
+                        'product_id' => $cartLocal->product_id,
+                        'cart_id' => $idCart->id,
+                        'quantity' => $cartLocal->quantity,
+                    ]);
+                } else {
+                    CartProducts::create([
+                        'product_id' => $cartLocal->product_id,
+                        'cart_id' => $cart[0]->id,
+                        'quantity' => $cartLocal->quantity,
+                    ]);
+                }
+            }
+        }
+        //remove os cookies
+        // Cookies . remove('products_cart');
+        setcookie("products_cart", "", time() - 3600, '/');
+    }
+}

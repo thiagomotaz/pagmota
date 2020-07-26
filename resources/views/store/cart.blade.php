@@ -17,21 +17,24 @@
   <link rel="stylesheet" href="css/owl.carousel.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
   <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
   <script>
+    // Cookies.remove('products_cart');
     function localCart() {
-      var local_cart = JSON.parse(localStorage.getItem("products_cart"));
+      var local_cart = JSON.parse(Cookies.get("products_cart"));
+      var total = 0;
       console.log(local_cart);
       Object.keys(local_cart).forEach(function(k) {
-        console.log("linha" + k + ' - ' + local_cart[k]['product-id'] + "-" + local_cart[k]['quantity']);
+        console.log("linha" + k + ' - ' + local_cart[k]['product_id'] + "-" + local_cart[k]['quantity']);
         var html = "<tr>" +
           "<td class='product-thumbnail'>" +
-          "<img src='" + unescape(local_cart[k]['product-image']) + "' + alt='Image' class='img-fluid'>" +
+          "<img src='" + unescape(local_cart[k]['product_image']) + "' + alt='Image' class='img-fluid'>" +
           "</td>" +
           "<td class='product-name'>" +
-          "<h2 class='h5 text-black'>"+ unescape(local_cart[k]['product-name']) + "</h2>" +
+          "<h2 class='h5 text-black'>"+ unescape(local_cart[k]['product_name']) + "</h2>" +
           "</td>" +
-          "<td>R$" + local_cart[k]['product-price'] + "</td>" +
+          "<td>R$" + local_cart[k]['product_price'] + "</td>" +
           "<td>" +
           "<div class='input-group mb-3' style='max-width: 120px;'>" +
           "<div class='input-group-prepend'>" +
@@ -43,9 +46,11 @@
           "</div>" +
           "</div>" +
           "</td>" +
-          "<td>R$"+ local_cart[k]['product-price'] * local_cart[k]['quantity'] + "</td>" +
+          "<td>R$"+ local_cart[k]['product_price'] * local_cart[k]['quantity'] + "</td>" +
           "<td><a href='#'' onclick='deleteCart()' class='btn btn-primary height-auto btn-sm'>X</a></td>" +
           "</tr>";
+          total += local_cart[k]['product_price'] * local_cart[k]['quantity'];
+          $('#total').text(total);  
         $("#cart").append(html); //monta os obj pra serem listados la
       });
 
@@ -230,7 +235,7 @@
                     <span class="text-black">Subtotal</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">R${{$total}}</strong>
+                    <strong class="text-black" id="subtotal">R${{$total}}</strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -238,7 +243,7 @@
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">R${{$total}}</strong>
+                    <strong class="text-black" id="total">R${{$total}}</strong>
                   </div>
                 </div>
 

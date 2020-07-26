@@ -270,15 +270,13 @@
   <script src="{{ asset('/js/owl.carousel.min.js')}}"></script>
   <script src="{{ asset('/js/jquery.magnific-popup.min.js')}}"></script>
   <script src="{{ asset('/js/aos.js')}}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
   <script src="{{ asset('/js/main.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
   <script>
     $(document).ready(function() {
-      // localStorage.clear();
-      console.log(JSON.parse(localStorage.getItem("products_cart")));
-      // Cookies.set('foo', 'bar');
-      console.log(Cookies.get('products_cart'));
+      // Cookies.remove('products_cart');
+      console.log(JSON.stringify(Cookies.get('products_cart')));
       $('#addCart').click(function() {
         $.ajax({
           type: "GET",
@@ -287,31 +285,19 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
           success: function(response) {
-            let products_cart = new Array()
-
-            // alert("ok");
+            let productsCart = new Array();
             if (parseInt(response) == 0) { //não está logado, armazenar o carrinho
-              if (localStorage.hasOwnProperty("products_cart")) {
-                products_cart = JSON.parse(localStorage.getItem("products_cart"));
+              if (Cookies.get("products_cart") != undefined) {
+                productsCart = JSON.parse([Cookies.get('products_cart')]);
               }
-              if(Cookies.get("products_cart") == undefined){
-                products_cartC = JSON.parse(Cookies.get('products_cart'));
-                console.log("nao tem");
-              }else{
-                console.log("tem");
-              }
-             
-
-              products_cart.push({
-                'product-id': <?= $product->id ?>,
+              productsCart.push({
+                'product_id': <?= $product->id ?>,
                 'quantity': parseInt($('#quantity').val()), //salvar nome, foto etc tb pra listar no carrinho
-                'product-price': <?= $product->price  ?>,
-                'product-image': escape('<?= $product->image ?>'),
-                'product-name': escape('<?= $product->name ?>')
+                'product_price': <?= $product->price  ?>,
+                'product_image': escape('<?= $product->image ?>'),
+                'product_name': escape('<?= $product->name ?>')
               });
-
-              localStorage.setItem("products_cart", JSON.stringify(products_cart));
-              Cookies.set("products_cart", JSON.stringify(products_cart));
+              Cookies.set("products_cart", JSON.stringify(productsCart));
             } else {
               $.ajax({
                 type: "POST",
@@ -334,15 +320,13 @@
               });
             }
           },
+
           error: function(response) {
             alert("n ok");
             alert(response);
 
           }
         });
-
-
-        alert('');
 
       });
     });
