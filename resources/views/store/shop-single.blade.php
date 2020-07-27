@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="{{ asset('/css/jquery-ui.css') }}">
   <link rel="stylesheet" href="{{ asset('/css/owl.carousel.min.css') }}">
   <link rel="stylesheet" href="{{ asset('/css/owl.theme.default.min.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 
   <link rel="stylesheet" href="{{ asset('css/aos.css') }}">
@@ -88,7 +89,7 @@
     </div>
 
 
-    <div class="bg-light py-3">
+    <div class="bg-light py-3" id="site-wrap">
       <div class="container">
         <div class="row">
           <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <a href="shop.html">Store</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">{{ $product->name }}</strong></div>
@@ -297,7 +298,19 @@
                 'product_image': escape('<?= $product->image ?>'),
                 'product_name': escape('<?= $product->name ?>')
               });
+
               Cookies.set("products_cart", JSON.stringify(productsCart));
+              const Toast = Swal.mixin({
+                position: 'center',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+              })
+
+              Toast.fire({
+                icon: 'success',
+                title: 'Produto adicionado ao carrinho'
+              })
             } else {
               $.ajax({
                 type: "POST",
@@ -306,12 +319,22 @@
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                  "product-id": '{{ $product->id }}',
+                  "product_id": '{{ $product->id }}',
                   "quantity": $('#quantity').val()
                 },
                 success: function(response) {
-                  alert(response);
-                  alert("adicionado com sucesso ao carrinho"); //tratar caso já tenha adicionado no carrinho esse item
+                  const Toast = Swal.mixin({
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                  })
+
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'Produto adicionado ao carrinho'
+                  })
+                  // alert("adicionado com sucesso ao carrinho"); //tratar caso já tenha adicionado no carrinho esse item
                 },
                 error: function(response) {
                   alert(response);

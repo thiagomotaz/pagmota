@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Cart;
 use App\CartProducts;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Cache;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
@@ -38,27 +39,31 @@ class IndexController extends Controller
             foreach ($cartJson as $cartLocal) { //ta encarando como um so item
                 echo ($cartLocal->product_name);
                 return;
-                
             }
         }
     }
 
     public function addCart(Request $request)
     {
+
+
         //pega o id do cart do usuário antes
         $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
+
+
         if (!$cart->first()) { //if dnt have cart, creeate one
+
             $idCart = Cart::create([
                 'user_id' => auth()->user()->id
             ]);
             CartProducts::create([
-                'product_id' => $request->input('product-id'),
+                'product_id' => $request->input('product_id'),
                 'cart_id' => $idCart->id,
                 'quantity' => $request->input('quantity'),
             ]);
         } else {
             CartProducts::create([
-                'product_id' => $request->input('product-id'),
+                'product_id' => $request->input('product_id'),
                 'cart_id' => $cart[0]->id,
                 'quantity' => $request->input('quantity'),
             ]);
@@ -67,8 +72,20 @@ class IndexController extends Controller
 
     public function deleteCart(Request $request)
     {
-        //pega o id do cart do usuário antes
         CartProducts::where('id', $request->id)->delete();
+    }
+
+    public function verifyEmptyCart()
+    {
+        //verifica se ta autenticado ou nao pra ver se ta vazio, pq de qq forma vai ter que fazer login(adiciona os itens dos cookies)
+        if (Auth::check()) {
+            return DB::table('cart_product')
+                ->join('cart', function ($join) {
+                    $join->on('cart_product.cart_id', '=', 'cart.id')
+                        ->where('cart.user_id', '=', auth()->user()->id);
+                })
+                ->get();
+        }
     }
 
     public function showCart()
@@ -76,8 +93,12 @@ class IndexController extends Controller
         if (!Auth::check()) {
             return view('store/cart');
         } else {
-            $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
-            // echo $cart;
+            $cart = Cart::where('user_id', '=', auth()->user()->id)->get(); //se n tem, cria
+            if (!$cart->first()) { //if dnt have cart, creeate one
+                Cart::create([
+                    'user_id' => auth()->user()->id
+                ]);
+            }
             $cart_id = $cart[0]->id;
             $products = Cart::find($cart_id)->products;
             return view('store/cart', ['products' => $products]);

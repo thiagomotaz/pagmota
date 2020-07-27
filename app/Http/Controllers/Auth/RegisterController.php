@@ -77,7 +77,7 @@ class RegisterController extends Controller
 
     protected function registered(Request $request, $user)
     {
-        if ($_COOKIE["products_cart"] != null) {
+        if (isset($_COOKIE["products_cart"]) ) {
             $cartJson = json_decode(utf8_encode($_COOKIE["products_cart"]));
             // var_dump($cartJson);
             $cart = Cart::where('user_id', '=', auth()->user()->id)->get();

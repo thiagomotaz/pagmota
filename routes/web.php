@@ -36,18 +36,21 @@ Route::get('/check',function(){
 });
 Route::get('/teste', 'IndexController@teste');
 
+#proteger a checkout com login
+
 
 Route::get('/index', 'IndexController@index');
 Route::get('/product/{id}', 'IndexController@show');
 Route::get('/cart', 'IndexController@showCart');
 Route::post('/cart', 'IndexController@addCart');
 Route::delete('/cart/{id}', 'IndexController@deleteCart');
+Route::view('/checkout', 'store/checkout')->middleware('auth');
+Route::get('/verifyEmptyCart', 'IndexController@verifyEmptyCart');
 
 
 // Route::get('/product/{id}', 'IndexController@show');
 Route::view('/shop', 'store/shop');
 Route::post('/product', 'IndexController@addCart');
 Route::view('/contact', 'store/contact');
-Route::view('/checkout', 'store/checkout');
 Route::view('/confirmation', 'store/confirmation');
 Route::view('/about', 'store/about');

@@ -18,12 +18,49 @@
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
 
   <script>
     // Cookies.remove('products_cart');
+    function deleteCart(id) {
+      Swal.fire({
+        title: 'Tem certeza??',
+        text: "Este item não será adicionado no checkout!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, remover',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          $.ajax({
+            type: "DELETE",
+            url: "/cart/" + id,
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+              location.reload();
+            },
+            error: function(response) {
+              alert(response);
+            }
+
+          });
+
+
+        }
+      })
+
+
+
+    }
+    var total = 0;
+
     function localCart() {
       var local_cart = JSON.parse(Cookies.get("products_cart"));
-      var total = 0;
       console.log(local_cart);
       Object.keys(local_cart).forEach(function(k) {
         console.log("linha" + k + ' - ' + local_cart[k]['product_id'] + "-" + local_cart[k]['quantity']);
@@ -32,7 +69,7 @@
           "<img src='" + unescape(local_cart[k]['product_image']) + "' + alt='Image' class='img-fluid'>" +
           "</td>" +
           "<td class='product-name'>" +
-          "<h2 class='h5 text-black'>"+ unescape(local_cart[k]['product_name']) + "</h2>" +
+          "<h2 class='h5 text-black'>" + unescape(local_cart[k]['product_name']) + "</h2>" +
           "</td>" +
           "<td>R$" + local_cart[k]['product_price'] + "</td>" +
           "<td>" +
@@ -40,23 +77,22 @@
           "<div class='input-group-prepend'>" +
           "<button class='btn btn-outline-primary js-btn-minus' type='button'>&minus;</button>" +
           "</div>" +
-          "<input type='text' class='form-control text-center' value='"+local_cart[k]['quantity']+"' placeholder='' aria-label='Example text with button addon' aria-describedby='button-addon1'>" +
+          "<input type='text' class='form-control text-center' value='" + local_cart[k]['quantity'] + "' placeholder='' aria-label='Example text with button addon' aria-describedby='button-addon1'>" +
           "<div class='input-group-append'>" +
           "<button class='btn btn-outline-primary js-btn-plus' type='button'>&plus;</button>" +
           "</div>" +
           "</div>" +
           "</td>" +
-          "<td>R$"+ local_cart[k]['product_price'] * local_cart[k]['quantity'] + "</td>" +
-          "<td><a href='#'' onclick='deleteCart()' class='btn btn-primary height-auto btn-sm'>X</a></td>" +
+          "<td>R$" + local_cart[k]['product_price'] * local_cart[k]['quantity'] + "</td>" +
+          "<td><a href='#'' onclick='deleteCart();' class='btn btn-primary height-auto btn-sm'>X</a></td>" +
           "</tr>";
-          total += local_cart[k]['product_price'] * local_cart[k]['quantity'];
-          $('#total').text(total);  
+        total += local_cart[k]['product_price'] * local_cart[k]['quantity'];
+
+
         $("#cart").append(html); //monta os obj pra serem listados la
       });
 
       // console.log()
-
-
     }
   </script>
   <link rel="stylesheet" href="css/aos.css">
@@ -133,7 +169,7 @@
         <div class="row">
           <div class="col-md-12 mb-0">
             <a href="index.html">Home</a> <span class="mx-2 mb-0">/</span>
-            <strong class="text-black">Cart</strong>
+            <strong class="text-black">Carrinho</strong>
           </div>
         </div>
       </div>
@@ -203,22 +239,22 @@
           <div class="col-md-6">
             <div class="row mb-5">
               <div class="col-md-6 mb-3 mb-md-0">
-                <button class="btn btn-primary btn-md btn-block">Update Cart</button>
+                <button class="btn btn-primary btn-md btn-block">Atualizar carrinho</button>
               </div>
               <div class="col-md-6">
-                <button class="btn btn-outline-primary btn-md btn-block">Continue Shopping</button>
+                <button class="btn btn-outline-primary btn-md btn-block">Continuar comprando</button>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12">
-                <label class="text-black h4" for="coupon">Coupon</label>
-                <p>Enter your coupon code if you have one.</p>
+                <label class="text-black h4" for="coupon">Cupom</label>
+                <p>Adicione um cupom, caso você tenha</p>
               </div>
               <div class="col-md-8 mb-3 mb-md-0">
-                <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+                <input type="text" class="form-control py-3" id="coupon" placeholder="Código do cupom">
               </div>
               <div class="col-md-4">
-                <button class="btn btn-primary btn-md px-4">Apply Coupon</button>
+                <button class="btn btn-primary btn-md px-4">Aplicar cupom</button>
               </div>
             </div>
           </div>
@@ -249,8 +285,8 @@
 
                 <div class="row">
                   <div class="col-md-12">
-                    <button class="btn btn-primary btn-lg btn-block" onclick="window.location='checkout.html'">Proceed To
-                      Checkout</button>
+                    <!-- finalizar compra exige carrinho n vazio e logado -->
+                    <button class="btn btn-primary btn-lg btn-block" id="checkout">Finalizar compra</button>
                   </div>
                 </div>
               </div>
@@ -312,7 +348,10 @@
       </div>
     </footer>
   </div>
-
+  <script>
+    $('#total').text("R$" + total);
+    $('#subtotal').text("R$" + total);
+  </script>
   <script src="js/jquery-ui.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -323,24 +362,32 @@
   <script src="js/main.js"></script>
 
   <script>
-    $(document).ready(function() {
-      function deleteCart(id) {
-        $.ajax({
-          type: "DELETE",
-          url: "/cart/" + id,
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          },
+    $('#checkout').click(function() {
+      $.ajax({
+        type: 'GET',
+        url: '/verifyEmptyCart',
+        success: function(response) {
+          // alert(response);
+          if (response.length > 0 || Cookies.get('products_cart') != undefined) {
+            window.location.href = "/checkout"
+          } else {
+            const Toast = Swal.mixin({
+              position: 'center',
+              showConfirmButton: false,
+              timer: 1000,
+              timerProgressBar: true,
+            })
 
-          success: function(response) {
-            alert("deletado com sucesso item do carrinho"); //tratar caso já tenha adicionado no carrinho esse item
-          },
-          error: function(response) {
-            alert(response);
+            Toast.fire({
+              icon: 'warning',
+              title: 'Carrinho vazio'
+            })
           }
+        },
+        error: function() {
 
-        });
-      }
+        }
+      });
     });
   </script>
 </body>
