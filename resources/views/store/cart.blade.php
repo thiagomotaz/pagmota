@@ -348,10 +348,7 @@
       </div>
     </footer>
   </div>
-  <script>
-    $('#total').text("R$" + total);
-    $('#subtotal').text("R$" + total);
-  </script>
+
   <script src="js/jquery-ui.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -360,6 +357,22 @@
   <script src="js/aos.js"></script>
 
   <script src="js/main.js"></script>
+  <script>
+    $.ajax({
+      type: "GET",
+      url: "/check",
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(response) {
+        let productsCart = new Array();
+        if (parseInt(response) == 0) {
+          $('#total').text("R$" + total);
+          $('#subtotal').text("R$" + total);
+        }
+      }
+    });
+  </script>
 
   <script>
     $('#checkout').click(function() {

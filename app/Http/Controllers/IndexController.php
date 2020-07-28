@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Cart;
 use App\CartProducts;
+use App\UserAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Cache;
 use Illuminate\Support\Facades\DB;
+use App\UserInfo;
 
 class IndexController extends Controller
 {
@@ -41,6 +43,28 @@ class IndexController extends Controller
                 return;
             }
         }
+    }
+
+    public function addUserInfos(Request $request)
+    {
+        return UserInfo::create([
+            'cpf' => $request->input('cpf'),
+            'area_code' => $request->input('ddd'),
+            'user_id' => auth()->user()->id,
+            'phone_number' => $request->input('celular'),
+        ]);
+    }
+
+    public function addUserAddress(Request $request)
+    {
+        return UserAddress::create([
+            'street' => $request->input('rua'),
+            'number' => $request->input('numero'),
+            'user_id' => auth()->user()->id,
+            'neighborhood' => $request->input('bairro'),
+            'city' => $request->input('cidade'),
+            'state' => $request->input('estado'),
+        ]);
     }
 
     public function addCart(Request $request)
@@ -88,6 +112,31 @@ class IndexController extends Controller
         }
     }
 
+    public function checkout()
+    {
+        if ($this->verifyEmptyCart()->first() != NULL) {
+            if (Auth::check()) {
+                $cart = Cart::where('user_id', '=', auth()->user()->id)->get(); //se n tem, cria
+                if (!$cart->first()) { //if dnt have cart, creeate one
+                    $idCart = Cart::create([
+                        'user_id' => auth()->user()->id
+                    ]);
+                    $cart_id = $idCart->id;
+                } else {
+                    $cart_id = $cart[0]->id;
+                }
+                // return $cart_id;
+                $products = Cart::find($cart_id)->products;
+
+                $buyerInfo = UserInfo::where('user_id', '=', auth()->user()->id)->get();
+
+                $buyerAddress = UserAddress::where('user_id', '=', auth()->user()->id)->get();
+
+                return view('store/checkout', ['products' => $products, 'buyerInfo' => $buyerInfo, 'buyerAddress' => $buyerAddress]);
+            }
+        }
+        return redirect('/cart');
+    }
     public function showCart()
     {
         if (!Auth::check()) {
@@ -102,6 +151,23 @@ class IndexController extends Controller
             $cart_id = $cart[0]->id;
             $products = Cart::find($cart_id)->products;
             return view('store/cart', ['products' => $products]);
+        }
+    }
+
+    public function getCart()
+    {
+        if (!Auth::check()) {
+            return view('store/cart');
+        } else {
+            $cart = Cart::where('user_id', '=', auth()->user()->id)->get(); //se n tem, cria
+            if (!$cart->first()) { //if dnt have cart, creeate one
+                Cart::create([
+                    'user_id' => auth()->user()->id
+                ]);
+            }
+            $cart_id = $cart[0]->id;
+            $products = Cart::find($cart_id)->products;
+            return json_encode($products);
         }
     }
 }

@@ -1,0 +1,3 @@
+to-do
+
+deleteCart() function from cookies products_array

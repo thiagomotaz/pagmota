@@ -44,8 +44,11 @@ Route::get('/product/{id}', 'IndexController@show');
 Route::get('/cart', 'IndexController@showCart');
 Route::post('/cart', 'IndexController@addCart');
 Route::delete('/cart/{id}', 'IndexController@deleteCart');
-Route::view('/checkout', 'store/checkout')->middleware('auth');
+Route::get('/checkout', 'IndexController@checkout')->middleware('auth');
 Route::get('/verifyEmptyCart', 'IndexController@verifyEmptyCart');
+Route::post('/addUserInfos', 'IndexController@addUserInfos');
+Route::post('/addUserAddress', 'IndexController@addUserAddress');
+Route::get('/getCart', 'IndexController@getCart');
 
 
 // Route::get('/product/{id}', 'IndexController@show');
