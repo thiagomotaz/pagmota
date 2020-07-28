@@ -69,7 +69,7 @@
         <div class="d-flex align-items-center justify-content-between">
           <div class="logo">
             <div class="site-logo">
-              <a href="index.html" class="js-logo-clone"><strong class="text-primary">Pharma</strong>tive</a>
+              <a href="index.html" class="js-logo-clone"><strong class="text-primary">Pag</strong>Mota</a>
             </div>
           </div>
           <div class="main-nav d-none d-lg-block">
@@ -393,207 +393,213 @@
     </div>
   </div>
   <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+
   <script>
     $(document).ready(function() {
+      $('#saveUserInfos').click(function() {
+        $.ajax({
+          type: 'POST',
+          url: '/addUserInfos',
+          data: {
+            'cpf': $('#cpf').val(),
+            'ddd': $('#ddd').val(),
+            'celular': $('#celular').val()
+          },
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(response) {
+            const Toast = Swal.mixin({
+              position: 'center',
+              showConfirmButton: false,
+              timer: 1000,
+              timerProgressBar: true,
+            })
 
+            Toast.fire({
+              icon: 'success',
+              title: 'Informações cadastradas com sucesso'
+            })
+            setTimeout(() => {
+              window.location.href = "/checkout";
 
-    });
-  </script>
+            }, 1000);
 
-  <script>
-    $('#saveUserInfos').click(function() {
-      $.ajax({
-        type: 'POST',
-        url: '/addUserInfos',
-        data: {
-          'cpf': $('#cpf').val(),
-          'ddd': $('#ddd').val(),
-          'celular': $('#celular').val()
-        },
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-          const Toast = Swal.mixin({
-            position: 'center',
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true,
-          })
-
-          Toast.fire({
-            icon: 'success',
-            title: 'Informações cadastradas com sucesso'
-          })
-          setTimeout(() => {
-            window.location.href = "/checkout";
-
-          }, 1000);
-
-        },
-        error: function() {
-          alert("erro");
-        }
-      });
-    });
-
-    $('#saveUserAddress').click(function() {
-      $.ajax({
-        type: 'POST',
-        url: '/addUserAddress',
-        data: {
-          'rua': $('#rua').val(),
-          'numero': $('#numero').val(),
-          'bairro': $('#bairro').val(),
-          'cidade': $('#cidade').val(),
-          'estado': $('#estado').val(),
-        },
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-          const Toast = Swal.mixin({
-            position: 'center',
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true,
-          })
-
-          Toast.fire({
-            icon: 'success',
-            title: 'Informações cadastradas com sucesso'
-          })
-          setTimeout(() => {
-            window.location.href = "/checkout";
-
-          }, 1000);
-
-        },
-        error: function() {
-          alert("erro");
-        }
-      });
-    });
-
-    function proccesCheckout() {
-      $body = $("body");
-      $body.addClass("loading");
-      var settings = {
-        "url": "https://ws.sandbox.pagseguro.uol.com.br/sessions?email=thiagomotax@gmail.com&token=DDABBCEA50DD4426B7E488661F35DB69",
-        "method": "POST",
-        "timeout": 0,
-      };
-
-      $.ajax(settings).done(function(xml) {
-        $(xml).find('session').each(function() {
-          $(this).find("id").each(function() {
-            var sessionID = $(this).text();
-            PagSeguroDirectPayment.setSessionId(sessionID);
-          });
-        });;
-      });
-
-      var hash;
-      PagSeguroDirectPayment.onSenderHashReady(function(response) {
-        if (response.status == 'error') {
-          console.log(response.message);
-          return false;
-        }
-        hash = response.senderHash; //Hash estará disponível nesta variável.
-      });
-      var items = {};
-
-      console.log(items);
-      var settings = {
-        "url": "https://ws.sandbox.pagseguro.uol.com.br/v2/transactions?email=thiagomotax@gmail.com&token=DDABBCEA50DD4426B7E488661F35DB69",
-        "method": "POST",
-        "timeout": 0,
-        "data": {
-          "paymentMode": "default",
-          "paymentMethod": "boleto",
-          "receiverEmail": "thiagomotax@gmail.com",
-          "currency": "BRL",
-          "notificationURL": "https://sualoja.com.br/notifica.html",
-          "reference": "REF1234",
-          "senderName": "{{Auth::user()->name}}",
-          "senderCPF": "{{$buyerInfo[0]->cpf}}",
-          "senderAreaCode": "{{$buyerInfo[0]->area_code}}",
-          "senderPhone": "{{$buyerInfo[0]->phone_number}}",
-          "senderEmail": "c82092657538328714582@sandbox.pagseguro.com.br",
-          "senderHash": hash,
-          "shippingAddressStreet": "{{$buyerAddress[0]->street}}",
-          "shippingAddressNumber": "{{$buyerAddress[0]->number}}",
-          "shippingAddressDistrict": "{{$buyerAddress[0]->neighborhood}}",
-          "shippingAddressPostalCode": "36660000",
-          "shippingAddressCity": "{{$buyerAddress[0]->city}}",
-          "shippingAddressState": "{{$buyerAddress[0]->state}}",
-          "shippingAddressCountry": "BRA",
-        }
-      };
-      //array de entrada dos items para gerar o boleto
-
-      $.ajax({
-        'url': '/getCart',
-        'method': 'GET',
-        'headers': {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-          var i = 1;
-          var dados = JSON.parse(response);
-          for (var j = 0; j < dados.length; j++) {
-            //BUG DE NAO ADICIONAR TODOS OS PRODUTOS NO BOLETO -- fixed
-            //gerando 2 boletos
-            // console.log(i, dados[i]['pivot']['product_id']);
-            var ItemId = "itemId" + i;
-            var ItemDescription = "itemDescription" + i;
-            var itemAmount = "itemAmount" + i;
-            var itemQuantity = "itemQuantity" + i;
-            settings['data'][ItemId] = dados[j]['pivot']['product_id'];
-            settings['data'][ItemDescription] = dados[j]['description'].slice(0, 99);
-            settings['data'][itemAmount] = dados[j]['price'] + '.00';
-            settings['data'][itemQuantity] = dados[j]['quantity'];
-            i++;
-
-            $.ajax(settings).done(function(response) {
-              $body.removeClass("loading");
-
-              console.log(response);
-
-              $(response).find('transaction').each(function() {
-                $(this).find("paymentLink").each(function() {
-                  console.log($(this).text());
-                });
-              });
-              // window.location.href = '/confirmation?link='+ response;
-
-              //remover do carrinho
-              return response;
-              //send data to another page
-            });
+          },
+          error: function() {
+            alert("erro");
           }
-        },
-        error: function() {
-          console.log(JSON.parse(response));
-        }
+        });
       });
-    }
 
-    $('#makeOrder').click(async function() {
-      var boleto = proccesCheckout();
+      $('#saveUserAddress').click(function() {
+        $.ajax({
+          type: 'POST',
+          url: '/addUserAddress',
+          data: {
+            'rua': $('#rua').val(),
+            'numero': $('#numero').val(),
+            'bairro': $('#bairro').val(),
+            'cidade': $('#cidade').val(),
+            'estado': $('#estado').val(),
+          },
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(response) {
+            const Toast = Swal.mixin({
+              position: 'center',
+              showConfirmButton: false,
+              timer: 1000,
+              timerProgressBar: true,
+            })
+
+            Toast.fire({
+              icon: 'success',
+              title: 'Informações cadastradas com sucesso'
+            })
+            setTimeout(() => {
+              window.location.href = "/checkout";
+
+            }, 1000);
+
+          },
+          error: function() {
+            alert("erro");
+          }
+        });
+      });
+
+      function proccesCheckout() {
+        if (<?php echo Auth::check() ?>) {
+          $body = $("body");
+          $body.addClass("loading");
+          var settings = {
+            "url": "https://ws.sandbox.pagseguro.uol.com.br/sessions?email=thiagomotax@gmail.com&token=DDABBCEA50DD4426B7E488661F35DB69",
+            "method": "POST",
+            "timeout": 0,
+          };
+
+          $.ajax(settings).done(function(xml) {
+            $(xml).find('session').each(function() {
+              $(this).find("id").each(function() {
+                var sessionID = $(this).text();
+                PagSeguroDirectPayment.setSessionId(sessionID);
+              });
+            });;
+          });
+
+          var hash;
+          PagSeguroDirectPayment.onSenderHashReady(function(response) {
+            if (response.status == 'error') {
+              console.log(response.message);
+              return false;
+            }
+            hash = response.senderHash; //Hash estará disponível nesta variável.
+          });
+
+
+          //verifica se ja tem endereço e infos pessoais cadastradas antes de definir
+          $.ajax({
+            'method': 'GET',
+            'url': '/verifyUsersAddressInfos',
+            success: function(response) {
+              console.log(response);
+              <?php if (isset($buyerAddress[0])) { ?>
+                var settings = {
+                  "url": "https://ws.sandbox.pagseguro.uol.com.br/v2/transactions?email=thiagomotax@gmail.com&token=DDABBCEA50DD4426B7E488661F35DB69",
+                  "method": "POST",
+                  "timeout": 0,
+                  "data": {
+                    "paymentMode": "default",
+                    "paymentMethod": "boleto",
+                    "receiverEmail": "thiagomotax@gmail.com",
+                    "currency": "BRL",
+                    "notificationURL": "https://sualoja.com.br/notifica.html",
+                    "reference": "REF1234",
+                    "senderName": "{{Auth::user()->name}}",
+                    "senderCPF": "{{$buyerInfo[0]->cpf}}",
+                    "senderAreaCode": "{{$buyerInfo[0]->area_code}}",
+                    "senderPhone": "{{$buyerInfo[0]->phone_number}}",
+                    "senderEmail": "c82092657538328714582@sandbox.pagseguro.com.br",
+                    "senderHash": hash,
+                    "shippingAddressStreet": "{{$buyerAddress[0]->street}}",
+                    "shippingAddressNumber": "{{$buyerAddress[0]->number}}",
+                    "shippingAddressDistrict": "{{$buyerAddress[0]->neighborhood}}",
+                    "shippingAddressPostalCode": "36660000",
+                    "shippingAddressCity": "{{$buyerAddress[0]->city}}",
+                    "shippingAddressState": "{{$buyerAddress[0]->state}}",
+                    "shippingAddressCountry": "BRA",
+                  }
+                };
+
+                //array de entrada dos items para gerar o boleto
+
+                $.ajax({
+                  'url': '/getCart',
+                  'method': 'GET',
+                  'headers': {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  },
+                  success: function(response) {
+                    var i = 1;
+                    var dados = JSON.parse(response);
+                    for (var j = 0; j < dados.length; j++) {
+                      //BUG DE NAO ADICIONAR TODOS OS PRODUTOS NO BOLETO -- fixed
+                      //gerando 2 boletos
+                      // console.log(i, dados[i]['pivot']['product_id']);
+                      var ItemId = "itemId" + i;
+                      var ItemDescription = "itemDescription" + i;
+                      var itemAmount = "itemAmount" + i;
+                      var itemQuantity = "itemQuantity" + i;
+                      settings['data'][ItemId] = dados[j]['pivot']['product_id'];
+                      settings['data'][ItemDescription] = dados[j]['description'].slice(0, 99);
+                      settings['data'][itemAmount] = dados[j]['price'] + '.00';
+                      settings['data'][itemQuantity] = dados[j]['quantity'];
+                      i++;
+                    }
+                    $.ajax(settings).done(function(response) {
+                      $body.removeClass("loading");
+
+                      console.log(response);
+                      var link;
+                      var code = [];
+                      $(response).find('transaction').each(function() {
+
+                        $(this).find("paymentLink").each(function() {
+                          link = $(this).text();
+                          console.log(link);
+                        });
+                        $(this).find("code").each(function() {
+                          code.push($(this).text());
+                          console.log(code);
+                        });
+                      });
+
+                      //remover do carrinho
+                      //salvar a ordem
+                      return window.location.href = "/confirmation?link=" + link + "&code=" + code[0];
+                      //send data to another page
+                    });
+                  },
+                  error: function() {
+                    console.log(JSON.parse(response));
+                  }
+                });
+              <?php } else { ?>
+                return alert("Preencha seu endereço e informações pessoais");
+              <?php } ?>
+            }
+          });
+
+        }
+      }
+
+      $('#makeOrder').click(async function() {
+        var boleto = proccesCheckout();
+      });
+
     });
-
-
-    // function getHash() {
-
-    // }
-
-    // function makeBoleto(hash) {
-
-
-
-
-    // });
   </script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/jquery-ui.js"></script>

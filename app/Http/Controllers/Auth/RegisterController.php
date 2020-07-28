@@ -77,11 +77,12 @@ class RegisterController extends Controller
 
     protected function registered(Request $request, $user)
     {
-        if (isset($_COOKIE["products_cart"]) ) {
+        $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
+
+        //synchronize cookies cart with db cart (and create a new one, if dont have)
+        if (isset($_COOKIE["products_cart"])) {
             $cartJson = json_decode(utf8_encode($_COOKIE["products_cart"]));
-            // var_dump($cartJson);
-            $cart = Cart::where('user_id', '=', auth()->user()->id)->get();
-            if (!$cart->first()) { //if dnt have cart, creeate one
+            if (!$cart->first()) {
                 $idCart = Cart::create([
                     'user_id' => auth()->user()->id
                 ]);
@@ -103,9 +104,14 @@ class RegisterController extends Controller
                     ]);
                 }
             }
+            setcookie("products_cart", "", time() - 3600, '/');
+        } else { //if not have cookies, just a create a new cart, if not hav
+            if (!$cart->first()) {
+                $idCart = Cart::create([
+                    'user_id' => auth()->user()->id
+                ]);
+            }
         }
-        //remove os cookies
-        // Cookies . remove('products_cart');
-        setcookie("products_cart", "", time() - 3600, '/');
+
     }
 }

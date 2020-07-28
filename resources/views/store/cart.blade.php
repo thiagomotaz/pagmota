@@ -121,7 +121,7 @@
         <div class="d-flex align-items-center justify-content-between">
           <div class="logo">
             <div class="site-logo">
-              <a href="index.html" class="js-logo-clone"><strong class="text-primary">Pharma</strong>tive</a>
+              <a href="index.html" class="js-logo-clone"><strong class="text-primary">Pag</strong>Mota</a>
             </div>
           </div>
           <div class="main-nav d-none d-lg-block">
@@ -378,7 +378,7 @@
     $('#checkout').click(function() {
       $.ajax({
         type: 'GET',
-        url: '/verifyEmptyCart',
+        url: '/verifyUsersAddressInfos',
         success: function(response) {
           // alert(response);
           if (response.length > 0 || Cookies.get('products_cart') != undefined) {

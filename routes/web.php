@@ -41,19 +41,24 @@ Route::get('/teste', 'IndexController@teste');
 
 Route::get('/index', 'IndexController@index');
 Route::get('/product/{id}', 'IndexController@show');
-Route::get('/cart', 'IndexController@showCart');
-Route::post('/cart', 'IndexController@addCart');
-Route::delete('/cart/{id}', 'IndexController@deleteCart');
-Route::get('/checkout', 'IndexController@checkout')->middleware('auth');
-Route::get('/verifyEmptyCart', 'IndexController@verifyEmptyCart');
-Route::post('/addUserInfos', 'IndexController@addUserInfos');
-Route::post('/addUserAddress', 'IndexController@addUserAddress');
-Route::get('/getCart', 'IndexController@getCart');
 
 
-// Route::get('/product/{id}', 'IndexController@show');
+Route::get('/cart', 'CartController@index');
+Route::get('/getCart', 'CartController@getCart');
+Route::post('/cart', 'CartController@addCart');
+Route::delete('/cart/{id}', 'CartController@deleteCart');
+Route::get('/verifyEmptyCart', 'CartController@verifyEmptyCart');
+
+Route::post('/addUserInfos', 'UserController@addUserInfos');
+Route::post('/addUserAddress', 'UserController@addUserAddress');
+Route::get('/verifyUsersAddress', 'UserController@verifyUsersAddress');
+Route::get('/verifyUsersAddressInfos', 'UserController@verifyUsersAddressInfos');
+Route::get('/checkout', 'CartController@checkout')->middleware('auth');
+
+
+Route::get('/confirmation', 'IndexController@confirmationMessage');
+
+
 Route::view('/shop', 'store/shop');
-Route::post('/product', 'IndexController@addCart');
 Route::view('/contact', 'store/contact');
-Route::view('/confirmation', 'store/confirmation');
 Route::view('/about', 'store/about');

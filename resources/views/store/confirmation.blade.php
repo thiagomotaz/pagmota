@@ -43,7 +43,7 @@
         <div class="d-flex align-items-center justify-content-between">
           <div class="logo">
             <div class="site-logo">
-              <a href="index.html" class="js-logo-clone"><strong class="text-primary">Pharma</strong>tive</a>
+              <a href="index.html" class="js-logo-clone"><strong class="text-primary">Pag</strong>Mota</a>
             </div>
           </div>
           <div class="main-nav d-none d-lg-block">
@@ -102,9 +102,9 @@
         <div class="row">
           <div class="col-md-12 text-center">
             <span class="icon-check_circle display-3 text-primary"></span>
-            <h2 class="display-3 text-black">Thank you!</h2>
-            <p class="lead mb-5">You order was successfuly completed.</p>
-            <p><a href="shop.html" class="btn btn-md height-auto px-4 py-3 btn-primary">Back to store</a></p>
+            <h2 class="display-3 text-black">Compra realizada com sucesso!</h2>
+            <p class="lead mb-5">{{$code}}</p>
+            <p><a href="{{$link}}" class="btn btn-md height-auto px-4 py-3 btn-primary">Ver boleto</a></p>
           </div>
         </div>
       </div>
