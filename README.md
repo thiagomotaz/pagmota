@@ -1,4 +1,4 @@
-[![Demo CountPages alpha](presentation.png)](https://www.youtube.com/watch?v=ek1j272iAmc)
+[![Demo CountPages alpha](https://media.giphy.com/media/fq7SA93XURGd8PGcBq/giphy.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)
 
 - Autenticação (login, esqueceu a a senha, registro, verificar email etc)
 - Carrinho utilizando cookies e sincronização automática com o BD
