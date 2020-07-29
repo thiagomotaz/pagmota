@@ -294,13 +294,14 @@
                     <div class="collapse" id="collapsebank">
                       <div class="py-2 px-4">
 
-                        <p class="mb-0">Clique no botão abaixo para gerar o boleto referente à seu pedido.</p>
+                        <p class="mb-0">Finalize sua compra utilizando a opção de boleto bancário.</p>
                         <!-- redirecionar pra thank you dps -->
+                        <div class="form-group" style="margin-top:10px">
+                          <button class="btn btn-primary btn-lg btn-block" id="makeOrderBoleto">Finalizar
+                            Compra</button>
+                        </div>
                       </div>
-                      <div class="form-group" style="padding-left: 10px; padding-right: 10px">
-                        <button class="btn btn-primary btn-lg btn-block" id="makeOrder">Finalizar
-                          Compra</button>
-                      </div>
+
                     </div>
                   </div>
 
@@ -309,88 +310,125 @@
 
                     <div class="collapse" id="collapsecheque">
                       <div class="py-2 px-4">
-                        <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the
-                          payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+                        <p class="mb-0">Finalize sua compra utilizando a opção de cartão de crédito.</p>
+                        <div class="row">
+                          <div class="col-md-12 mb-3">
+                            <label for="cc-name">Nome</label>
+                            <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                            <small class="text-muted">igual ao mostrado no cartão</small>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                            <label for="cc-number">Número do cartão</label>
+                            <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label for="cc-expiration">Validade</label>
+                            <input type="date" class="form-control" id="cc-expiration" placeholder="" required>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="cc-expiration">CVV</label>
+                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleFormControlSelect1">Parcelamento</label>
+                          <select class="form-control" id="exampleFormControlSelect1">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select>
+                        
+
+                        <div class="col-md-12 mb-6" style="margin-top:10px">
+                          <button class="btn btn-primary btn-lg btn-block" id="makeOrderBoleto">Finalizar
+                            Compra</button>
+                        </div>
                       </div>
                     </div>
+
                   </div>
-
-                  <div class="border mb-5">
-                    <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsepaypal" role="button" aria-expanded="false" aria-controls="collapsepaypal">Cartão de débito</a></h3>
-
-                    <div class="collapse" id="collapsepaypal">
-                      <div class="py-2 px-4">
-                        <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the
-                          payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
-                      </div>
-                    </div>
-                  </div>
-
-
-
                 </div>
+
+                <div class="border mb-5">
+                  <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsepaypal" role="button" aria-expanded="false" aria-controls="collapsepaypal">Cartão de débito</a></h3>
+
+                  <div class="collapse" id="collapsepaypal">
+                    <div class="py-2 px-4">
+                      <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the
+                        payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+                    </div>
+                  </div>
+                </div>
+
+
+
               </div>
             </div>
-
           </div>
+
         </div>
-        <!-- </form> -->
       </div>
+      <!-- </form> -->
     </div>
-    <footer class="site-footer bg-light">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+  </div>
+  <footer class="site-footer bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
 
-            <div class="block-7">
-              <h3 class="footer-heading mb-4">About <strong class="text-primary">Pharmative</strong></h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quae reiciendis distinctio voluptates
-                sed dolorum excepturi iure eaque, aut unde.</p>
-            </div>
-
+          <div class="block-7">
+            <h3 class="footer-heading mb-4">About <strong class="text-primary">Pharmative</strong></h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quae reiciendis distinctio voluptates
+              sed dolorum excepturi iure eaque, aut unde.</p>
           </div>
-          <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
-            <h3 class="footer-heading mb-4">Navigation</h3>
+
+        </div>
+        <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
+          <h3 class="footer-heading mb-4">Navigation</h3>
+          <ul class="list-unstyled">
+            <li><a href="#">Supplements</a></li>
+            <li><a href="#">Vitamins</a></li>
+            <li><a href="#">Diet &amp; Nutrition</a></li>
+            <li><a href="#">Tea &amp; Coffee</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="block-5 mb-5">
+            <h3 class="footer-heading mb-4">Contact Info</h3>
             <ul class="list-unstyled">
-              <li><a href="#">Supplements</a></li>
-              <li><a href="#">Vitamins</a></li>
-              <li><a href="#">Diet &amp; Nutrition</a></li>
-              <li><a href="#">Tea &amp; Coffee</a></li>
+              <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
+              <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
+              <li class="email">emailaddress@domain.com</li>
             </ul>
           </div>
 
-          <div class="col-md-6 col-lg-3">
-            <div class="block-5 mb-5">
-              <h3 class="footer-heading mb-4">Contact Info</h3>
-              <ul class="list-unstyled">
-                <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
-                <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
-                <li class="email">emailaddress@domain.com</li>
-              </ul>
-            </div>
-
-
-          </div>
-        </div>
-        <div class="row pt-5 mt-5 text-center">
-          <div class="col-md-12">
-            <p>
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              Copyright &copy;
-              <script>
-                document.write(new Date().getFullYear());
-              </script> All rights reserved | This template is made
-              with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">Colorlib</a>
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            </p>
-          </div>
 
         </div>
       </div>
-    </footer>
-    <div class="modal">
-      <!-- Place at bottom of page -->
+      <div class="row pt-5 mt-5 text-center">
+        <div class="col-md-12">
+          <p>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            Copyright &copy;
+            <script>
+              document.write(new Date().getFullYear());
+            </script> All rights reserved | This template is made
+            with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">Colorlib</a>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          </p>
+        </div>
+
+      </div>
     </div>
+  </footer>
+  <div class="modal">
+    <!-- Place at bottom of page -->
+  </div>
   </div>
   <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
 
@@ -470,7 +508,7 @@
         });
       });
 
-      function proccesCheckout() {
+      function proccesCheckoutBoleto() {
         if (<?php echo Auth::check() ?>) {
           $body = $("body");
           $body.addClass("loading");
@@ -595,8 +633,8 @@
         }
       }
 
-      $('#makeOrder').click(async function() {
-        var boleto = proccesCheckout();
+      $('#makeOrderBoleto').click(async function() {
+        var boleto = proccesCheckoutBoleto();
       });
 
     });
