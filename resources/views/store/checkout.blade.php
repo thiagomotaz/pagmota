@@ -311,6 +311,7 @@
                     <div class="collapse" id="collapsecheque">
                       <div class="py-2 px-4">
                         <p class="mb-0">Finalize sua compra utilizando a opção de cartão de crédito.</p>
+                        <input type="hidden" id="cc-brand">
                         <div class="row">
                           <div class="col-md-12 mb-3">
                             <label for="cc-name">Nome</label>
@@ -318,122 +319,140 @@
                             <small class="text-muted">igual ao mostrado no cartão</small>
                           </div>
                           <div class="col-md-12 mb-3">
-                            <label for="cc-number">Número do cartão</label>
-                            <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                            <label for="cc-number">Número do cartão <img src="" id="bandeira"></span></label>
+                            <input type="text" class="form-control" id="cc-number" maxlength="16" placeholder="" required>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-6 mb-3">
                             <label for="cc-expiration">Validade</label>
-                            <input type="date" class="form-control" id="cc-expiration" placeholder="" required>
+                            <input type="text" class="form-control" id="cc-expiration" maxlength="6" placeholder="" required>
                           </div>
                           <div class="col-md-6 mb-3">
                             <label for="cc-expiration">CVV</label>
-                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                            <input type="text" class="form-control" id="cc-cvv" maxlength="3" placeholder="" required>
                           </div>
                         </div>
                         <div class="form-group">
-                          <label for="exampleFormControlSelect1">Parcelamento</label>
-                          <select class="form-control" id="exampleFormControlSelect1">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                          <label for="installments">Parcelamento</label>
+                          <select class="form-control" id="cc-installments">
                           </select>
-                        
 
-                        <div class="col-md-12 mb-6" style="margin-top:10px">
-                          <button class="btn btn-primary btn-lg btn-block" id="makeOrderBoleto">Finalizar
-                            Compra</button>
+
+                          <div class="col-md-12 mb-6" style="margin-top:10px">
+                            <button class="btn btn-primary btn-lg btn-block" id="makeOrderCartao">Finalizar
+                              Compra</button>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                  </div>
-                </div>
-
-                <div class="border mb-5">
-                  <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsepaypal" role="button" aria-expanded="false" aria-controls="collapsepaypal">Cartão de débito</a></h3>
-
-                  <div class="collapse" id="collapsepaypal">
-                    <div class="py-2 px-4">
-                      <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the
-                        payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
                     </div>
                   </div>
+
+                  <div class="border mb-5">
+                    <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsepaypal" role="button" aria-expanded="false" aria-controls="collapsepaypal">Cartão de débito</a></h3>
+
+                    <div class="collapse" id="collapsepaypal">
+                      <div class="py-2 px-4">
+                        <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the
+                          payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+                      </div>
+                    </div>
+                  </div>
+
+
+
                 </div>
-
-
-
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
+        <!-- </form> -->
       </div>
-      <!-- </form> -->
     </div>
-  </div>
-  <footer class="site-footer bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+    <footer class="site-footer bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
 
-          <div class="block-7">
-            <h3 class="footer-heading mb-4">About <strong class="text-primary">Pharmative</strong></h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quae reiciendis distinctio voluptates
-              sed dolorum excepturi iure eaque, aut unde.</p>
+            <div class="block-7">
+              <h3 class="footer-heading mb-4">About <strong class="text-primary">Pharmative</strong></h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quae reiciendis distinctio voluptates
+                sed dolorum excepturi iure eaque, aut unde.</p>
+            </div>
+
           </div>
-
-        </div>
-        <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
-          <h3 class="footer-heading mb-4">Navigation</h3>
-          <ul class="list-unstyled">
-            <li><a href="#">Supplements</a></li>
-            <li><a href="#">Vitamins</a></li>
-            <li><a href="#">Diet &amp; Nutrition</a></li>
-            <li><a href="#">Tea &amp; Coffee</a></li>
-          </ul>
-        </div>
-
-        <div class="col-md-6 col-lg-3">
-          <div class="block-5 mb-5">
-            <h3 class="footer-heading mb-4">Contact Info</h3>
+          <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
+            <h3 class="footer-heading mb-4">Navigation</h3>
             <ul class="list-unstyled">
-              <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
-              <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
-              <li class="email">emailaddress@domain.com</li>
+              <li><a href="#">Supplements</a></li>
+              <li><a href="#">Vitamins</a></li>
+              <li><a href="#">Diet &amp; Nutrition</a></li>
+              <li><a href="#">Tea &amp; Coffee</a></li>
             </ul>
           </div>
 
+          <div class="col-md-6 col-lg-3">
+            <div class="block-5 mb-5">
+              <h3 class="footer-heading mb-4">Contact Info</h3>
+              <ul class="list-unstyled">
+                <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
+                <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
+                <li class="email">emailaddress@domain.com</li>
+              </ul>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <p>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script> All rights reserved | This template is made
+              with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">Colorlib</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+          </div>
 
         </div>
       </div>
-      <div class="row pt-5 mt-5 text-center">
-        <div class="col-md-12">
-          <p>
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            Copyright &copy;
-            <script>
-              document.write(new Date().getFullYear());
-            </script> All rights reserved | This template is made
-            with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">Colorlib</a>
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-          </p>
-        </div>
-
-      </div>
+    </footer>
+    <div class="modal">
+      <!-- Place at bottom of page -->
     </div>
-  </footer>
-  <div class="modal">
-    <!-- Place at bottom of page -->
-  </div>
   </div>
   <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
-
   <script>
     $(document).ready(function() {
+      setPagSeguroSession();
+
+      $(document).ready(function() {
+        $('#cc-expiration').mask('00/0000');
+      });
+
+      function setPagSeguroSession() {
+        var settings = {
+          "url": "https://ws.sandbox.pagseguro.uol.com.br/sessions?email=thiagomotax@gmail.com&token=DDABBCEA50DD4426B7E488661F35DB69",
+          "method": "POST",
+          "timeout": 0,
+        };
+
+        $.ajax(settings).done(function(xml) {
+          $(xml).find('session').each(function() {
+            $(this).find("id").each(function() {
+              var sessionID = $(this).text();
+              PagSeguroDirectPayment.setSessionId(sessionID);
+              console.log("sessão pagseguro iniciada");
+            });
+          });;
+        });
+      }
+
       $('#saveUserInfos').click(function() {
         $.ajax({
           type: 'POST',
@@ -508,34 +527,24 @@
         });
       });
 
+      function getSenderHash() {
+        var hash;
+        PagSeguroDirectPayment.onSenderHashReady(function(response) {
+          if (response.status == 'error') {
+            console.log(response.message);
+            return false;
+          }
+          hash = response.senderHash; //Hash estará disponível nesta variável.
+        });
+        return hash;
+      }
+
       function proccesCheckoutBoleto() {
         if (<?php echo Auth::check() ?>) {
           $body = $("body");
           $body.addClass("loading");
-          var settings = {
-            "url": "https://ws.sandbox.pagseguro.uol.com.br/sessions?email=thiagomotax@gmail.com&token=DDABBCEA50DD4426B7E488661F35DB69",
-            "method": "POST",
-            "timeout": 0,
-          };
 
-          $.ajax(settings).done(function(xml) {
-            $(xml).find('session').each(function() {
-              $(this).find("id").each(function() {
-                var sessionID = $(this).text();
-                PagSeguroDirectPayment.setSessionId(sessionID);
-              });
-            });;
-          });
-
-          var hash;
-          PagSeguroDirectPayment.onSenderHashReady(function(response) {
-            if (response.status == 'error') {
-              console.log(response.message);
-              return false;
-            }
-            hash = response.senderHash; //Hash estará disponível nesta variável.
-          });
-
+          var hash = getSenderHash();
 
           //verifica se ja tem endereço e infos pessoais cadastradas antes de definir
           $.ajax({
@@ -583,9 +592,6 @@
                     var i = 1;
                     var dados = JSON.parse(response);
                     for (var j = 0; j < dados.length; j++) {
-                      //BUG DE NAO ADICIONAR TODOS OS PRODUTOS NO BOLETO -- fixed
-                      //gerando 2 boletos
-                      // console.log(i, dados[i]['pivot']['product_id']);
                       var ItemId = "itemId" + i;
                       var ItemDescription = "itemDescription" + i;
                       var itemAmount = "itemAmount" + i;
@@ -633,8 +639,242 @@
         }
       }
 
-      $('#makeOrderBoleto').click(async function() {
+      function proccessCheckoutCartao() {
+        $body = $("body");
+        $body.addClass("loading");
+
+        var hash;
+        var token;
+        var cc_brand = $('#cc-brand').val();
+        var cc_number = $('#cc-number').val();
+        var cc_cvv = $('#cc-cvv').val();
+        var expiration = ($('#cc-expiration').val()).split('/');
+        var selected = $('#cc-installments').find('option:selected');
+        var quantity = selected.data('quantity');
+        var amount = selected.data('amount');
+        console.log($('#cc-brand').val() + " <brand");
+        console.log($('#cc-number').val() + " <number");
+        console.log($('#cc-cvv').val() + " <cvv");
+        console.log("expiration month: " + expiration[0] + " year" + expiration[1]);
+
+        //--------generate hash sender
+        PagSeguroDirectPayment.onSenderHashReady(function(response) {
+          if (response.status == 'error') {
+            console.log(response.message);
+            return false;
+          }
+          hash = response.senderHash; //Hash estará disponível nesta variável.
+          console.log(hash + " hashe");
+          //=========generate card token
+          PagSeguroDirectPayment.createCardToken({
+            cardNumber: cc_number,
+            brand: cc_brand,
+            cvv: cc_cvv,
+            expirationMonth: expiration[0],
+            expirationYear: expiration[1],
+            success: function(response) {
+              token = response['card']['token'];
+              console.log(token + " tokene");
+              console.log(quantity + " quantity");
+              console.log(amount + " amount");
+              //processa the card transaction
+              var settings = {
+                "url": "https://ws.sandbox.pagseguro.uol.com.br/v2/transactions?email=thiagomotax@gmail.com&token=DDABBCEA50DD4426B7E488661F35DB69",
+                "method": "POST",
+                "timeout": 0,
+                "data": {
+                  "paymentMode": "default",
+                  "paymentMethod": "creditCard",
+                  "receiverEmail": "thiagomotax@gmail.com",
+                  "currency": "BRL",
+                  "notificationURL": "https://sualoja.com.br/notifica.html",
+                  "senderName": "{{Auth::user()->name}}",
+                  "senderCPF": "{{$buyerInfo[0]->cpf}}",
+                  "senderAreaCode": "{{$buyerInfo[0]->area_code}}",
+                  "senderPhone": "{{$buyerInfo[0]->phone_number}}",
+                  "senderEmail": "c82092657538328714582@sandbox.pagseguro.com.br",
+                  "senderHash": hash,
+                  "shippingAddressStreet": "{{$buyerAddress[0]->street}}",
+                  "shippingAddressNumber": "{{$buyerAddress[0]->number}}",
+                  "shippingAddressDistrict": "{{$buyerAddress[0]->neighborhood}}",
+                  "shippingAddressPostalCode": "36660000",
+                  "shippingAddressCity": "{{$buyerAddress[0]->city}}",
+                  "shippingAddressState": "SP",
+                  "shippingAddressCountry": "BRA",
+                  "creditCardToken": token,
+                  "installmentQuantity": selected.data('quantity'),
+                  "installmentValue": selected.data('amount').toFixed(2),
+                  "noInterestInstallmentQuantity": 2,
+                  "creditCardHolderName": $('#cc-name').val(),
+                  "creditCardHolderCPF": "{{$buyerInfo[0]->cpf}}",
+                  "creditCardHolderBirthDate": "27/10/1987",
+                  "creditCardHolderAreaCode": "{{$buyerInfo[0]->area_code}}",
+                  "creditCardHolderPhone": "{{$buyerInfo[0]->phone_number}}",
+                  "billingAddressStreet": "{{$buyerAddress[0]->street}}",
+                  "billingAddressNumber": "{{$buyerAddress[0]->number}}",
+                  "billingAddressDistrict": "{{$buyerAddress[0]->neighborhood}}",
+                  "billingAddressPostalCode": "36660000",
+                  "billingAddressCity": "{{$buyerAddress[0]->city}}",
+                  "billingAddressState": "{{$buyerAddress[0]->state}}",
+                  "billingAddressCountry": "BRA"
+                }
+              };
+
+              $.ajax({
+                'url': '/getCart',
+                'method': 'GET',
+                'headers': {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                  var i = 1;
+                  var dados = JSON.parse(response);
+                  console.log(response);
+                  console.log("cart acima");
+                  for (var j = 0; j < dados.length; j++) {
+                    console.log("cart item" + j);
+                    var ItemId = "itemId" + i;
+                    var ItemDescription = "itemDescription" + i;
+                    var itemAmount = "itemAmount" + i;
+                    var itemQuantity = "itemQuantity" + i;
+                    settings['data'][ItemId] = dados[j]['pivot']['product_id'];
+                    settings['data'][ItemDescription] = dados[j]['description'].slice(0, 99);
+                    settings['data'][itemAmount] = dados[j]['price'] + '.00';
+                    settings['data'][itemQuantity] = dados[j]['quantity'];
+                    i++;
+                    console.log(settings);
+
+                  }
+                  // console.dir(settings, { depth: null })
+                  console.log(JSON.stringify(settings, null, 4));
+
+
+                  $.ajax(settings).done(function(response) {
+                    console.log(response);
+                    $body.removeClass("loading");
+                    var code = [];
+                    $(response).find('transaction').each(function() {
+                      $(this).find("code").each(function() {
+                        code.push($(this).text());
+                        console.log(code);
+                        return window.location.href = "/confirmation?&code=" + code[0];
+
+                        $body.removeClass("loading");
+
+                      });
+                    });
+                  }).fail(function(response) {
+                    console.log(response);
+                    console.log("aq")
+                  });
+
+
+                  //send data to another page
+
+                },
+                error: function() {
+                  console.log(JSON.parse(response));
+                }
+              });
+            },
+            error: function(response) {
+              alert("dados incorretos");
+              $body.removeClass("loading");
+            },
+            complete: function(response) {
+
+            }
+          });
+        });
+
+
+
+
+        //card data to generate token that will be send in checkout (card number will not be send in call)
+
+
+
+      }
+
+      $('#cc-number').keyup(function() {
+        if ($('#cc-number').val().length == 6) {
+          //get card brand
+          PagSeguroDirectPayment.getBrand({
+            cardBin: $('#cc-number').val(),
+            success: function(response) {
+              console.log(response);
+              //set brand logo
+              brand_name = response['brand']['name']
+              $('#cc-brand').val(brand_name);
+              $('#bandeira').attr('src', 'https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/42x20/' + brand_name + '.png');
+              var selected = $('#cc-installments').find('option:selected');
+              var quantity = selected.data('quantity');
+              var amount = selected.data('amount');
+              //get avaiable installment
+              PagSeguroDirectPayment.getInstallments({
+                amount: <?php echo $total ?>,
+                maxInstallmentNoInterest: 2, //deverá informar a quantidade de parcelas que deseja assumir de taxa até qual parcela (parcelamento sem juros até q parcela)
+                brand: brand_name,
+                success: function(response) {
+                  // console.log(response);
+                  var installments = response['installments'][brand_name]; //parcelamento
+                  console.log(installments);
+                  var $dropdown = $("#cc-installments");
+
+                  //load dinamically on select with this values
+                  installments.forEach(function(arrayItem) {
+                    if (arrayItem.interestFree) {
+                      var installmentText = arrayItem.quantity + 'X R$' + arrayItem.installmentAmount + ' sem juros (total R$' + arrayItem.totalAmount + ')';
+                      // $dropdown.append($("<option />").val(arrayItem.quantity).text(installmentText));
+                      $dropdown.append($('<option>', {
+                        'value': arrayItem.quantity,
+                        'text': installmentText,
+                        'data-amount': arrayItem.installmentAmount,
+                        'data-quantity': arrayItem.quantity
+                      }));
+                    } else {
+                      var installmentText = arrayItem.quantity + 'X R$' + arrayItem.installmentAmount + ' com juros (total R$' + arrayItem.totalAmount + ')';
+                      $dropdown.append($('<option>', {
+                        'value': arrayItem.quantity,
+                        'text': installmentText,
+                        'data-amount': arrayItem.installmentAmount,
+                        'data-quantity': arrayItem.quantity
+                      }));
+                    }
+                  });
+                },
+                error: function(response) {
+                  // callback para chamadas que falharam.
+                },
+                complete: function(response) {
+                  // Callback para todas chamadas.
+                }
+              });
+            },
+            error: function(response) {
+              // console.log(response);
+            },
+            complete: function(response) {
+              // console.log(response);
+            }
+          });
+        } else if ($('#cc-number').val().length < 6) {
+          $('#bandeira').attr('src', '');
+          $('#cc-installments').find('option').remove();
+        }
+      });
+
+
+      // if all data is correc
+
+
+      $('#makeOrderBoleto').click(function() {
         var boleto = proccesCheckoutBoleto();
+      });
+
+      $('#makeOrderCartao').click(function() {
+        var cartao = proccessCheckoutCartao();
+
       });
 
     });
@@ -646,6 +886,7 @@
   <script src="js/owl.carousel.min.js"></script>
   <script src="js/jquery.magnific-popup.min.js"></script>
   <script src="js/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous"></script>
 
 
   <script src="js/main.js"></script>
